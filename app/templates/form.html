@@ -2,32 +2,66 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Générateur de CV</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <title>Générateur de CV Intelligent</title>
+    <link rel="stylesheet" href="/static/style.css?v=3">
 </head>
 <body>
-    <h1>📝 Générateur de CV</h1>
+    <h1>🧠 Smart CV Generator</h1>
+
     <form id="cvForm">
-        <label>Nom complet :</label>
-        <input type="text" name="name" required><br>
+        <fieldset>
+            <legend>Informations personnelles</legend>
+            <input type="text" name="name" placeholder="Nom complet" required>
+            <input type="email" name="email" placeholder="Adresse e-mail" required>
+            <input type="text" name="phone" placeholder="Téléphone (optionnel)">
+            <input type="text" name="location" placeholder="Localisation (optionnel)">
+            <input type="text" name="github" placeholder="Profil GitHub (optionnel)">
+            <textarea name="summary" placeholder="Profil / Objectif (optionnel)"></textarea>
+        </fieldset>
 
-        <label>Email :</label>
-        <input type="email" name="email" required><br>
+        <fieldset>
+            <legend>Compétences</legend>
+            <textarea name="skills" placeholder="Langages, outils, frameworks... (séparés par virgule)" required></textarea>
+        </fieldset>
 
-        <label>Compétences :</label>
-        <textarea name="skills" required></textarea><br>
+        <fieldset>
+            <legend>Formations</legend>
+            <textarea name="education" placeholder="Ex: 2021–2024 : Bachelor Réseaux et Sécurité Informatique (optionnel)"></textarea>
+        </fieldset>
 
-        <label>Expériences :</label>
-        <textarea name="experience" required></textarea><br>
+        <fieldset>
+            <legend>Expériences professionnelles</legend>
+            <textarea name="experience" placeholder="Ex: Stage en cybersécurité chez XYZ, 2023 (optionnel)"></textarea>
+        </fieldset>
 
-        <button type="submit">Générer mon CV</button>
+        <fieldset>
+            <legend>Projets</legend>
+            <textarea name="projects" placeholder="Ex: Développement d’une appli Flask, Simulation d’attaque réseau... (optionnel)"></textarea>
+        </fieldset>
+
+        <fieldset>
+            <legend>Certifications</legend>
+            <textarea name="certifications" placeholder="Ex: Cisco CCNA, Google Cybersecurity, etc. (optionnel)"></textarea>
+        </fieldset>
+
+        <fieldset>
+            <legend>Langues</legend>
+            <textarea name="languages" placeholder="Ex: Français (courant), Anglais (intermédiaire), etc. (optionnel)"></textarea>
+        </fieldset>
+
+        <fieldset>
+            <legend>Qualités</legend>
+            <textarea name="qualities" placeholder="Ex: Leadership, rigueur, travail en équipe... (optionnel)"></textarea>
+        </fieldset>
+
+        <button type="submit">Générer mon CV PDF</button>
     </form>
 
     <script>
         const form = document.getElementById('cvForm');
 
         form.addEventListener('submit', async function (event) {
-            event.preventDefault(); // empêche le rechargement de la page
+            event.preventDefault();
 
             const formData = new FormData(form);
 
@@ -42,10 +76,7 @@
                     return;
                 }
 
-                // Récupérer le PDF en blob
                 const blob = await response.blob();
-
-                // Créer un lien de téléchargement temporaire
                 const url = window.URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
@@ -54,11 +85,11 @@
                 a.click();
                 a.remove();
 
-                // Nettoyer le formulaire après téléchargement
-                form.querySelectorAll('input, textarea').forEach(field => field.value = '');
+                // vider les champs après envoi
+                form.querySelectorAll('input, textarea').forEach(f => f.value = '');
             } catch (error) {
-                console.error("Erreur :", error);
-                alert("Une erreur est survenue lors de la génération du CV.");
+                console.error(error);
+                alert("Erreur de connexion avec le serveur.");
             }
         });
     </script>

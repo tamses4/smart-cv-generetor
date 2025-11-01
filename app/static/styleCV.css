@@ -1,91 +1,86 @@
-/* === GLOBAL === */
 body {
     font-family: 'Segoe UI', Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background: #f4f6f8;
     color: #333;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 30px;
 }
 
-.container {
-    max-width: 800px;
-    margin: 30px auto;
-    background: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+.cv-container {
+    background: #fff;
+    max-width: 900px;
+    margin: auto;
+    border-radius: 12px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
 }
 
-/* === HEADER === */
-.header {
-    background-color: #0078D7;
+header {
+    background-color: #0066cc;
     color: white;
     padding: 25px;
     text-align: center;
 }
 
-.header h1 {
+header h1 {
     margin: 0;
     font-size: 28px;
 }
 
-.header p {
-    margin: 5px 0 0;
+header .contact {
+    margin: 8px 0 0;
     font-size: 14px;
 }
 
-/* === CONTENT === */
-.content {
-    display: flex;
-    flex-direction: row;
-    padding: 25px;
-    gap: 20px;
+header a {
+    color: white;
+    text-decoration: underline;
 }
 
-/* === LEFT COLUMN === */
+.summary {
+    margin-top: 15px;
+    font-style: italic;
+    font-size: 14px;
+}
+
+/* Layout */
+main {
+    display: flex;
+    padding: 25px;
+    gap: 30px;
+}
+
 .left {
     width: 35%;
     border-right: 2px solid #eee;
     padding-right: 20px;
 }
 
-.left h2 {
-    color: #0078D7;
-    border-bottom: 1px solid #0078D7;
-    font-size: 18px;
-    margin-bottom: 10px;
-}
-
-.left p {
-    font-size: 14px;
-    line-height: 1.6;
-    margin: 0 0 10px;
-}
-
-/* === RIGHT COLUMN === */
 .right {
     width: 65%;
 }
 
-.right h2 {
-    color: #0078D7;
-    border-bottom: 1px solid #0078D7;
+.section {
+    margin-bottom: 20px;
+}
+
+.section h2 {
+    color: #0066cc;
     font-size: 18px;
+    border-bottom: 1px solid #0066cc;
+    padding-bottom: 4px;
     margin-bottom: 10px;
 }
 
-.right p {
+.section p, .section li {
     font-size: 14px;
     line-height: 1.6;
-    white-space: pre-line;
 }
 
-/* === FOOTER === */
-.footer {
+footer {
+    background: #f1f1f1;
     text-align: center;
+    padding: 10px;
     font-size: 12px;
-    color: #666;
-    padding: 10px 0;
-    background-color: #f0f0f0;
-    border-top: 1px solid #ddd;
+    color: #555;
 }

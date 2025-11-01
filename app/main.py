@@ -5,6 +5,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from weasyprint import HTML
+from datetime import datetime
 import tempfile
 import os
 
@@ -36,7 +37,8 @@ async def generate_pdf(
     data = CVData(name=name, email=email, skills=skills, experience=experience)
 
     # rendu du modèle HTML
-    html_content = templates.get_template("cv_template.html").render(cv=data.dict())
+    html_content = templates.get_template("cv_template.html").render(cv=data.dict(), year=datetime.now().year)
+
 
     # génération du PDF temporaire
     with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp_pdf:
