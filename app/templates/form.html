@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>📝 Générateur de CV</h1>
-    <form action="/generate" method="post">
+    <form id="cvForm">
         <label>Nom complet :</label>
         <input type="text" name="name" required><br>
 
@@ -22,5 +22,45 @@
 
         <button type="submit">Générer mon CV</button>
     </form>
+
+    <script>
+        const form = document.getElementById('cvForm');
+
+        form.addEventListener('submit', async function (event) {
+            event.preventDefault(); // empêche le rechargement de la page
+
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch('/generate', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) {
+                    alert("Erreur lors de la génération du CV.");
+                    return;
+                }
+
+                // Récupérer le PDF en blob
+                const blob = await response.blob();
+
+                // Créer un lien de téléchargement temporaire
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = formData.get('name').replace(/\s+/g, '_') + '_CV.pdf';
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+
+                // Nettoyer le formulaire après téléchargement
+                form.querySelectorAll('input, textarea').forEach(field => field.value = '');
+            } catch (error) {
+                console.error("Erreur :", error);
+                alert("Une erreur est survenue lors de la génération du CV.");
+            }
+        });
+    </script>
 </body>
 </html>

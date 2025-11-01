@@ -3,16 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ cv.name }} - CV</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/styleCV.css">
 </head>
 <body>
-    <h1>{{ cv.name }}</h1>
-    <p><strong>Email :</strong> {{ cv.email }}</p>
+    <div class="container">
+        <!-- HEADER -->
+        <div class="header">
+            <h1>{{ cv.name }}</h1>
+            <p>{{ cv.email }}</p>
+        </div>
 
-    <h2>Compétences</h2>
-    <p>{{ cv.skills }}</p>
+        <!-- CONTENT -->
+        <div class="content">
+            <div class="left">
+                <h2>Compétences</h2>
+                <p>{{ cv.skills }}</p>
+            </div>
 
-    <h2>Expériences</h2>
-    <p>{{ cv.experience }}</p>
+            <div class="right">
+                <h2>Expériences</h2>
+                <p>{{ cv.experience }}</p>
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="footer">
+            <p>CV généré automatiquement avec Smart CV Generator</p>
+        </div>
+    </div>
 </body>
 </html>
