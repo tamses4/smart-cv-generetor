@@ -15,27 +15,33 @@ from typing import Tuple
 from dotenv import load_dotenv
 
 # Forcer l'encodage UTF-8 sur Windows
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 
 # Charger les variables locales (.env) si présentes
 load_dotenv()
 
-# Récupération des secrets via les variables d'environnement définies dans GitHub Actions
-GEMINI_API_KEY = os.environ.get("GEMINI_API_KEY")
-GMAIL_APP_PASSWORD = os.environ.get("GMAIL_APP_PASSWORD")
-SENDER_EMAIL = os.environ.get("SENDER_EMAIL")
+# Récupération des secrets (compatibles GitHub Actions et .env)
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+SENDER_EMAIL = os.getenv("SENDER_EMAIL")
+GEMINI_APP_PASSWORD = os.getenv("GEMINI_APP_PASSWORD")
 
 if not GEMINI_API_KEY:
-    print("⚠️  Avertissement : aucune clé IA détectée. Définis GEMINI_API_KEY dans tes secrets GitHub ou ton .env.")
+    print("⚠️  Avertissement : aucune clé IA détectée (GEMINI_API_KEY).")
 else:
     print("🔑 Clé API IA détectée (masquée pour sécurité).")
+
+if not SENDER_EMAIL or not GEMINI_APP_PASSWORD:
+    print("⚠️  Les variables e-mail ne sont pas toutes définies (SENDER_EMAIL / GEMINI_APP_PASSWORD).")
+    print("➡️  Configure-les dans tes secrets GitHub ou ton fichier .env.\n")
 
 # --- Fonctions utilitaires ---
 
 def run_command(command: str) -> Tuple[int, str]:
     """Exécute une commande shell et retourne (code_retour, sortie)."""
-    process = subprocess.run(command, shell=True, capture_output=True, text=True)
-    return process.returncode, process.stdout + process.stderr
+    process = subprocess.run(
+        command, shell=True, capture_output=True, text=True, encoding="utf-8", errors="replace"
+    )
+    return process.returncode, (process.stdout + process.stderr).strip()
 
 def print_status(tool: str, success: bool, details: str = "") -> None:
     """Affiche un message coloré selon le succès ou l’échec."""
@@ -53,7 +59,7 @@ def main() -> None:
     tools = {
         "Black (formatage)": "black --check app/",
         "Flake8 (lint)": "flake8 app/",
-        "Mypy (typage strict)": "mypy app/"
+        "Mypy (typage strict)": "mypy app/",
     }
 
     global_success = True
@@ -62,7 +68,7 @@ def main() -> None:
         print(f"🔍 {tool}...")
         code, output = run_command(command)
         success = code == 0
-        print_status(tool, success, output.strip())
+        print_status(tool, success, output)
         if not success:
             global_success = False
 
