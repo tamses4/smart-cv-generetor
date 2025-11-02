@@ -1,14 +1,12 @@
 # app/main.py
 from fastapi import FastAPI, Request, Form
-from fastapi.responses import HTMLResponse, FileResponse, Response
+from fastapi.responses import HTMLResponse, FileResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from weasyprint import HTML
 from datetime import datetime
 import tempfile
-
-
 
 app = FastAPI(title="Smart CV Generator")
 # configuration templates & static

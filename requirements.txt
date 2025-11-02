@@ -35,7 +35,7 @@ weasyprint
 python-multipart
 colorama
 python-dotenv
-
+#tamses
 # Qualité et typage
 black
 flake8
