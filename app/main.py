@@ -7,12 +7,10 @@ from pydantic import BaseModel
 from weasyprint import HTML
 from datetime import datetime
 import tempfile
-from typing import Any, cast
 
 
 
 app = FastAPI(title="Smart CV Generator")
-
 # configuration templates & static
 templates = Jinja2Templates(directory="app/templates")
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
