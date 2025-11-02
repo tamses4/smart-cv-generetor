@@ -33,3 +33,7 @@ uvicorn
 jinja2
 weasyprint
 python-multipart
+# Qualité et typage
+black
+flake8
+mypy
