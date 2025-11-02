@@ -33,6 +33,9 @@ uvicorn
 jinja2
 weasyprint
 python-multipart
+colorama
+python-dotenv
+
 # Qualité et typage
 black
 flake8
