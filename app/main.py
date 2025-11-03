@@ -6,7 +6,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 from weasyprint import HTML
 from datetime import datetime
-import tempfile
+import tempfile, tabnanny
 
 app = FastAPI(title="Smart CV Generator")
 # configuration templates & static
