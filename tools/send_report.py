@@ -83,10 +83,10 @@ def get_changed_files() -> List[str]:
         return []
 
 
-def ask_gemini_for_analysis(report: str, diff: str, changed_files: List[str]) -> str:
+def ask_gemini_for_analysis(report: str, diff: str, changed_files: list[str]) -> str:
     """Appelle Gemini pour générer une version HTML du rapport."""
     if not GEMINI_API_KEY:
-        return f"<p>⚠️ Clé GEMINI_API_KEY non configurée — Analyse IA désactivée.</p><pre>{report}</pre>"
+        return "<p>⚠️ Clé GEMINI_API_KEY non configurée. Analyse IA désactivée.</p>"
 
     try:
         prompt = f"""
@@ -108,14 +108,29 @@ Style HTML :
 - titres colorés (vert si succès, rouge si erreurs)
 - suggestions IA bleues
 - texte lisible, clair, professionnel
-"""
+        """
 
-        headers = {"Content-Type": "application/json", "x-goog-api-key": GEMINI_API_KEY}
-        body = {"contents": [{"parts": [{"text": prompt}]}]}
+        headers = {
+            "Content-Type": "application/json",
+            "x-goog-api-key": GEMINI_API_KEY,
+        }
 
+        body = {
+            "contents": [
+                {
+                    "parts": [
+                        {"text": prompt}
+                    ]
+                }
+            ]
+        }
+
+        # ✅ Nouveau endpoint + modèle correct (Gemini 1.5 Flash)
         response = requests.post(
-            "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent",
-            headers=headers, data=json.dumps(body), timeout=60
+            "https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent",
+            headers=headers,
+            data=json.dumps(body),
+            timeout=60
         )
 
         if response.status_code != 200:
@@ -124,13 +139,13 @@ Style HTML :
         data = response.json()
         candidates = data.get("candidates", [])
         if not candidates:
-            return f"<pre>{report}</pre>"
+            return "<p>⚠️ Aucune réponse reçue de l'IA.</p>"
 
-        html = candidates[0]["content"]["parts"][0]["text"]
-        return html.replace("```html", "").replace("```", "").strip()
+        html_content = candidates[0]["content"]["parts"][0].get("text", "")
+        return html_content.replace("```html", "").replace("```", "").strip()
 
     except Exception as e:
-        return f"<p>⚠️ Erreur Gemini : {e}</p><pre>{report}</pre>"
+        return f"<p>⚠️ Erreur Gemini : {e}</p>"
 
 
 def send_email(subject: str, html_body: str, status: Literal["success", "failure"]) -> None:
